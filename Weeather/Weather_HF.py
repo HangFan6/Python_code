@@ -1,9 +1,3 @@
-# -*- coding:utf-8 -*-
-"""
-作者：何婷
-天气播报系统设计
-日期：2022年12月27日
-"""
 # 和风天气
 import requests
 import csv
