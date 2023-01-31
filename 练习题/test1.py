@@ -29,7 +29,7 @@ rate = [0.1, 0.085, 0.06, 0.05, 0.03, 0.02]
 bonus = 0.0
 if profit <= pft[0]:
     bonus += profit*0.06
-    print("奖金为：%d\n" % bonus)
+    print("奖金为：%.2f" % bonus)
 else:
     pft_max = []
     for i in range(5):
