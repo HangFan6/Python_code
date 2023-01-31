@@ -27,12 +27,11 @@ for i in range(2000, year):
 print(y_days)
 # 计算year年1月到month月的天数
 months = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
+if is_leapyear(year) and month > 2:
+    months[1] += 1
 m_days = 0
-i = month - 1
-for i in range(0, i):
+for i in range(month-1):
     m_days = m_days + months[i]
-    if is_leapyear(year) and month > 2:
-        m_days += 1
 print(m_days)
 # 计算2000年1月1日 到 xx年xx月xx日 的天数
 sum_all = y_days + m_days + date
@@ -41,5 +40,7 @@ print(sum_all)
 x = sum_all % 5
 if x in range(1, 4):
     print("打鱼去喽")
-else:
+elif x == 0 or x == 4:
     print("晒网去喽")  # x=0或4
+else:
+    print("等一哈！让我看看是哪个角角出错啰！")
