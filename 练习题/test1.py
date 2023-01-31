@@ -37,11 +37,11 @@ else:
             pft_max.append(pft[i])
             bonus += rank[i]*rate[i]
             # 计算rank[i]及之前的奖金总和
-            # print("奖金为：%d" % bonus)
+            # print("奖金为：%.2f" % bonus)
     print(pft_max)
     profit = profit - max(pft_max)
-    # print("奖金为：%d" % bonus)
+    # print("奖金为：%.2f" % bonus)
     for i in range(len(pft_max)):
         if pft_max[i] == max(pft_max):
             bonus = bonus + profit * rate[i+1]
-            print(bonus)
+            print("奖金为：%.2f" % bonus)
