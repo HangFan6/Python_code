@@ -84,8 +84,9 @@ def getData(baseurl):
             else:
                 data.append(" ")
             bd = re.findall(findBd, item)
+            bd = (" ".join(bd))
             bd = re.sub('<br(\s+)?/>(\s+)?', " ", str(bd))  # 去除<br/>
-            bd = bd.replace(" ","").replace(r"['\n","").replace("']","").replace(r"\xa0"," ").replace(r"\n"," ")
+            bd = re.sub('\s+', " ", bd)
             # print(bd)
             data.append(bd.strip())  # 去除前后空格
             datalist.append(data)  # 将处理好的电影信息放入列表中
