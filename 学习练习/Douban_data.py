@@ -7,7 +7,8 @@ from bs4 import BeautifulSoup  # 网页解析，用于数据获取
 import re  # 正则表达式，进行文字匹配
 import urllib.request, urllib.error  # 指定url，获取网页信息
 import xlwt  # 操作Excel
-import sqlite3  # 进行数据库操作
+# import sqlite3  # 进行数据库操作
+import pymysql
 
 
 def askUrl(url):
@@ -42,6 +43,7 @@ findJidge = re.compile(r'<span>(\d*)人评价</span>')
 findIng = re.compile(r'<span class="inq">(.*)</span>')
 # 找到影片的相关内容
 findBd = re.compile(r'<p class="">(.*?)</p>', re.S)
+# findBd = re.compile(r'<p class="">(.*?)<br/>(.*?)</p>', re.S)
 
 
 def getData(baseurl):
@@ -83,13 +85,14 @@ def getData(baseurl):
                 data.append(" ")
             bd = re.findall(findBd, item)
             bd = re.sub('<br(\s+)?/>(\s+)?', " ", str(bd))  # 去除<br/>
-            bd = re.sub('/', " ", bd)  # 替换/
+            bd = bd.replace(" ","").replace(r"['\n","").replace("']","").replace(r"\xa0"," ").replace(r"\n"," ")
+            print(bd)
             data.append(bd.strip())  # 去除前后空格
             datalist.append(data)  # 将处理好的电影信息放入列表中
     return datalist
 
 
-def saveData(savepath,datalist):
+def saveData(savepath, datalist):
     workbook = xlwt.Workbook(encoding="utf-8", style_compression=0)  # 创建workbook对象
     worksheet = workbook.add_sheet('豆瓣电影250', cell_overwrite_ok=True)  # 创建工作表
     # worksheet.write(0,0,"hello")    # 行，列，内容
@@ -97,18 +100,19 @@ def saveData(savepath,datalist):
     for i in range(0, 8):
         worksheet.write(0, i, col[i])  # 写入列名
     for i in range(0, 250):
+        # print("第%d条"%i)
         data = datalist[i]
-        for j in range(0,8):
-            worksheet.write(i+1,j,data[j])
+        for j in range(0, 8):
+            worksheet.write(i + 1, j, data[j])
     workbook.save(savepath)  # 保存数据表
 
 
 def main():
     baseurl = "https://movie.douban.com/top250?start="
     savepath = r".\test\豆瓣电影Top250.xls"  # 保存地址
-    askUrl(baseurl)
+    # askUrl(baseurl)
     datalist = getData(baseurl)
-    saveData(savepath,datalist)
+    saveData(savepath,datalist)     # excel表格保存
 
 
 if __name__ == "__main__":
