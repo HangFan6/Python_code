@@ -138,6 +138,8 @@
 # num.append(blue)
 # print(f"本期双色球中奖号码：\n {num[0]} {num[1]} {num[2]} {num[3]} {num[4]} {num[5]} {num[6]}")
 
+
+# ===========进程池===================
 # import time
 # import json
 # import multiprocessing
@@ -176,39 +178,124 @@
 #     send_all_p.join()   # 阻塞最长使用率的进程
 #     recv.terminate()    # 终结接收端
 
-import random
-import time
-import threading
+# ============线程==================
+# import random
+# import time
+# import threading
+#
+# lst=['python','django','tornado','flask','bs5','requests','uvloop']
+# new_lst=[]
+# def work():
+#     if len(lst)==0:
+#         return
+#     data=random.choice(lst)
+#     lst.remove(data)
+#     new_data='%s_new'%data
+#     new_lst.append(new_data)
+#     time.sleep(1)
+#
+# if __name__=='__main__':
+#     start=time.time()
+#     print('old list len:', len(lst))
+#     t_lst=[]
+#     for i in range(len(lst)):
+#         t=threading.Thread(target=work)
+#         t_lst.append(t)
+#         t.start()
+#     for t in t_lst:
+#         t.join()
+#     print('old list:',lst)
+#     print('new list:',new_lst)
+#     print('new_list len:',len(new_lst))
+#     print('time is %s'%(time.time()-start))
 
-lst=['python','django','tornado','flask','bs5','requests','uvloop']
-new_lst=[]
-def work():
-    if len(lst)==0:
-        return
-    data=random.choice(lst)
-    lst.remove(data)
-    new_data='%s_new'%data
-    new_lst.append(new_data)
-    time.sleep(1)
+
+# ===============线程池=====================
+# import time
+# import threading
+# from concurrent.futures import ThreadPoolExecutor
+#
+# # 线程锁使用
+# lock=threading.Lock()
+# def work(i):
+#     lock.acquire()
+#     print(i)
+#     time.sleep(1)
+#     lock.release()
+#
+# if __name__=='__main__':
+#     t=ThreadPoolExecutor(2)   # 设置2个线程
+#     for i in range(20):
+#         t.submit(work,(i,))
+
+
+# # =========异步==================
+# import os
+# import asyncio
+# import time
+# import random
+#
+# async def a():
+#     for i in range(10):
+#         print(i,'a',os.getpid())
+#         await asyncio.sleep(random.random() * 2)
+#     return 'a function'
+# async def b():
+#     for i in range(10):
+#         print(i,'b',os.getpid())
+#         await asyncio.sleep(random.random()*2)
+#     return 'b function'
+# async def main():
+#     result=await asyncio.gather(a(),b())
+#     print(result)
+#
+# if __name__=='__main__':
+#     start=time.time()
+#     asyncio.run(main())
+#     print(time.time()-start)
+#     print('parent is %s'% os.getpid())
+
+import os
+import asyncio
+import time
+import random
+import gevent
+
+def gevent_a():
+    for i in range(10):
+        print(i,'a gevent',os.getpid())
+        gevent.sleep(random.random() * 2)
+    return 'gevent a result'
+def gevent_b():
+    for i in range(10):
+        print(i,'b gevent',os.getpid())
+        gevent.sleep(random.random() * 2)
+    return 'gevent b result'
+
+async def a():
+    for i in range(10):
+        print(i,'a',os.getpid())
+        await asyncio.sleep(random.random() * 2)
+    return 'a function'
+async def b():
+    for i in range(10):
+        print(i,'b',os.getpid())
+        await asyncio.sleep(random.random()*2)
+    return 'b function'
+async def main():
+    result=await asyncio.gather(a(),b())
+    print(result)
 
 if __name__=='__main__':
     start=time.time()
-    print('old list len:', len(lst))
-    t_lst=[]
-    for i in range(len(lst)):
-        t=threading.Thread(target=work)
-        t_lst.append(t)
-        t.start()
-    for t in t_lst:
-        t.join()
-    print('old list:',lst)
-    print('new list:',new_lst)
-    print('new_list len:',len(new_lst))
-    print('time is %s'%(time.time()-start))
+    g_a=gevent.spawn(gevent_a)
+    g_b=gevent.spawn(gevent_b)
+    gevent_list=[g_a,g_b]
+    result=gevent.joinall(gevent_list)
+    print(result)
 
-
-
-
+    print(time.time()-start)
+    print('parent is %s'% os.getpid())
 
 
 
