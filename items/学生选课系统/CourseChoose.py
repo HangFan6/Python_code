@@ -93,9 +93,9 @@ if __name__=='__main__':
     for i in range(len(course)):
         stu_cour = Student.add_course(stu[i],course[i])
         ret=Student.course_detail(stu[i])
-        select.append(ret)
-        # print(ret)
+        select.append(set(ret))
+        # print(set(ret))
     for stu_instance in stu:
         name = stu_instance.s_name
-        print('Nane：{}，Selected：{}'.format(name,select[x]))
+        print('Name：{}，Selected：{}'.format(name,[select[x]]))
         x+=1
