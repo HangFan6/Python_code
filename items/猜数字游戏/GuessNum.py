@@ -31,10 +31,10 @@ def all_num(n):
 
 # 数值合法性判定函数
 def num_legal(ls):
-    if ls[0] == ls[1]:
+    if int(ls[0]) == int(ls[1]):
         print("您所输入的区间数字相同！！请重新启动程序")
         sys.exit()
-    elif ls[0] > ls[1]:
+    elif int(ls[0]) > int(ls[1]):
         print("您所输入的数字区间大小有误！！请重新启动程序")
         sys.exit()
     else:
@@ -44,13 +44,14 @@ def num_legal(ls):
 # 产生指定区间随机数函数
 def set_final_num(num1, num2):
     lst = [num1, num2]
-    print(f"所产生的随机数字区间为：{lst}")
-    result = list(filter(all_num, lst))
-    if len(result) == 2:
-        return True
-    else:
-        print("您所输入的为非数字字符串！！请重新启动程序")
-        sys.exit()
+    if num_legal(lst):
+        print(f"所产生的随机数字区间为：{lst}")
+        result = list(filter(all_num, lst))
+        if len(result) == 2:
+            return True
+        else:
+            print("您所输入的为非数字字符串！！请重新启动程序")
+            sys.exit()
 
 
 # 核查数值是否属于指定区间函数
@@ -63,15 +64,14 @@ def check_num_legal(num):
 
 # 日志写入函数
 def write_record(times, value):
-    format_ = '%(asctime)s%(filename)%s[line:%(lineno)d]%(levelname)s%(message)s'
+    format_ = '%(asctime)s%(filename)s[line:%(lineno)d]%(levelname)s%(message)s'
     logging.basicConfig(
         level=logging.INFO,
         format=format_,
         filename='猜测日志.txt',
         datefmt='%Y-%m-%d %H:%M:%S',
         filemode='a')
-    logging.info("第{}次您猜测的数字为：{}\n".format(times,value))
-
+    return logging
 
 
 # 猜测数字并进行比对直到猜测到正确数字
@@ -87,18 +87,17 @@ def main(rand1):
         else:
             count += 1
             write_record(count, guess)
+            logging.info("第{}次您猜测的数字为：{}\n".format(count, guess))
             if guess < rand1:
                 print("您猜测的数字偏小")
                 guess = int(input("请重新猜测一个数字："))
-                write_record(count, guess)
                 continue
             elif guess > rand1:
                 print("您猜测的数字偏大")
                 guess = int(input("请重新猜测一个数字："))
-                write_record(count, guess)
                 continue
             else:
-                print("恭喜你！猜对了")
+                print("恭喜你！用了{}次猜对了数字".format(count))
                 break
 
 if __name__ == '__main__':
