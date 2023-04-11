@@ -33,7 +33,7 @@ class Course(object):
     def binding(self,teacher):
         if teacher:
            self.teacher = teacher
-           return '课程名称: {}, 教师名称: {}'.format(self.c_name,self.teacher)
+           return {'课程名称': self.c_name, '教师名称': self.teacher}
         else:
             return None
 
