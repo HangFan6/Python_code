@@ -30,7 +30,6 @@ class ReadDoc(object):
                     _cell_str += cell.text + ','  # 显示每行内容
                 self.table_text += _cell_str + '\n'
 
-
 def search_word(path, targets):
     result = glob.glob(path)
     finall_result=[]
@@ -40,9 +39,10 @@ def search_word(path, targets):
         if glob.os.path.isfile(i):
             # 判断是否为docx文件
             if i.endswith('.docx'):
+                # print(i)
                 doc = ReadDoc(i)
-                p_text = doc.p_text  # 读取文档文档
-                t_text = doc.table_text  # 读取表格文档
+                p_text = doc.p_text  # 读取文档段落
+                t_text = doc.table_text  # 读取文档表格
                 all_text = p_text + t_text
                 for target in targets:
                     if target not in all_text:
