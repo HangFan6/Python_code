@@ -5,8 +5,9 @@
 """
 from docx import Document
 from docx.shared import Inches,RGBColor,Pt
-from docx.enum.text import WD_PARAGRAPH_ALIGNMENT
+from docx.enum.text import WD_PARAGRAPH_ALIGNMENT,WD_ALIGN_PARAGRAPH
 from docx.oxml.ns import qn
+from docx.enum.style import WD_STYLE_TYPE  # 获取表格样式
 
 doc=Document()
 # ==========全局样式定义============
@@ -35,10 +36,19 @@ p.add_run('\n这是word生成的知识。').italic=True  # 段落内容追加
 p.alignment=WD_PARAGRAPH_ALIGNMENT.CENTER  # 段落居中
 
 # 添加图片
-image_obj=doc.add_picture('../test3/images/imooc_1.jpg',width=Inches(5))   # 高可以通过宽自动化处理
+p1=doc.add_paragraph()
+p1.alignment=WD_ALIGN_PARAGRAPH.RIGHT  # 图片居右
+_p1=p1.add_run()
+image=_p1.add_picture('../test3/images/imooc_1.jpg',width=Inches(5))   # 高可以通过宽自动化处理
+
 # ======添加表格=========
+# # 查看表格样式
+# for i in doc.styles:
+#     if i.type==WD_STYLE_TYPE.TABLE:
+#         print(i.name)
+
 title=['name','age','sex']
-table=doc.add_table(rows=1,cols=3)
+table=doc.add_table(rows=1,cols=3,style='Colorful List Accent 1')
 title_cells=table.rows[0].cells
 title_cells[0].text=title[0]
 title_cells[1].text=title[1]
