@@ -50,3 +50,4 @@ if __name__=='__main__':
     while 1:
         schedule.run_pending()  # 此时会进行判断，当前是否有任务处于要被执行的状态，若没有，会结束程序
         time.sleep(1)  # 避免查询频率过快，消耗CPU，提高性能
+
