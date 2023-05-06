@@ -3,7 +3,6 @@
 作者：HET
 日期：2023年05月06日
 """
-import numpy as np
 import pandas as pd
 import pandas_datareader as pdr
 
@@ -16,25 +15,24 @@ data=round(data,2)
 # print(data)
 
 # **********CSV****************
-# data.to_csv('GS.csv')  # csv存储
-# filename='GS.csv'
-# gs=pd.read_csv(filename)  # csv读取,会自动创建序号
+data.to_csv('GS.csv')  # csv存储
+filename='GS.csv'
+gs=pd.read_csv(filename)  # csv读取,会自动创建序号
 # print(gs)
-# gs=pd.read_csv(filename,index_col='DATE')  # 指定索引,不创建索引序号
+gs=pd.read_csv(filename,index_col='DATE')  # 指定索引,不创建索引序号
 # print(gs)
 
-# # 存储前对数据索引进行命名：date
+# 存储前对数据索引进行命名：date
 # print(data.index.name)  # 查看索引名称 DATE
-# data.index.name='date'  # 修改索引名称
+data.index.name='date'  # 修改索引名称
 # print(data)
-# data.to_csv('GS.csv')  # csv存储
-# filename='GS.csv'
-# gs=pd.read_csv(filename)  # csv读取
-# # print(gs)
-
+data.to_csv('GS.csv')  # csv存储
+filename='GS.csv'
+gs=pd.read_csv(filename)  # csv读取
+# print(gs)
 # # =====数据追加===========
 data3=data.tail()
-# data3.to_csv(filename,mode='a',header=False)  # 追加数据，不追加标题
+data3.to_csv(filename,mode='a',header=False)  # 追加数据，不追加标题
 
 
 # **********EXCEL***************
@@ -48,15 +46,13 @@ with pd.ExcelWriter('writer.xlsx') as writer:
 with pd.ExcelWriter('writer.xlsx',mode='a',engine='openpyxl') as writer:
     data3.to_excel(writer,sheet_name='d')
 
-
 # ======每个sheet中追加数据==========
 # 利用openpyxl库：读取sheet -> 进行追加数据 -> 存入表格
 import openpyxl
 wb = openpyxl.load_workbook('writer.xlsx')  # 打开excel
-wa=wb.active  # 激活工作簿
 wb.save('writer[copy].xlsx')  # 保存文件 重命名拷贝excel文件
 
-sheet1 = wb['d']
+sheet1 = wb['d']  # 选择工作簿
 sheet2 = wb.copy_worksheet(sheet1)  # 拷贝工作簿
 sheet2.title = "sheet2"  # 拷贝工作簿命名
 wb.save('writer.xlsx')  # 保存文件
