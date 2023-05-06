@@ -73,7 +73,6 @@ import pandas_datareader as pdr
 # x=data.resample(rule='Y').prod()   # 累乘
 # print(x)
 
-
 # 数据合并
 data=pdr.get_data_fred('GS10')
 data2=pdr.get_data_fred('GS5')
