@@ -5,7 +5,7 @@
 """
 import numpy as np
 import pandas as pd
-
+import pandas_datareader as pdr
 
 # # 创建一张二维表格
 # data={'apple':[2,3,5,7],'orange':[5,4,8,9]}
@@ -62,7 +62,6 @@ import pandas as pd
 # print(data.sort_values(['A','B'],ascending=False))  # 降序
 
 
-import pandas_datareader as pdr
 # 5年10年份美国债券收益数据
 # data=pdr.get_data_fred('GS10')  # GS10 是一个数据接口
 # print(data)
