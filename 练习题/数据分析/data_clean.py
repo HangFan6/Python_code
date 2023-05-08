@@ -127,3 +127,13 @@ for c in columns:
 '''
 # eda_calculate(column='是否老人',types=[0,1])
 
+'''    用户行为    '''
+
+
+
+
+
+
+
+
+
