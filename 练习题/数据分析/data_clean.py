@@ -5,12 +5,13 @@
 日期：2023年05月06日
 """
 import pandas as pd
+import matplotlib.pyplot as plt
 
 # ==========数据导入===========
 data=pd.read_csv('WA_Fn-UseC_-Telco-Customer-Churn.csv')  # 电信用户流失
 # print(data.columns)
 data.columns=['用户ID', '性别', '是否老人', '是否有伴侣', '是否有孩子',
-       '合同期限', '通话服务', '多线程', '网络服务',
+       '在网时长', '通话服务', '多线程', '网络服务',
        '在线安全', '在线备份', '设备安全', '技术支持',
        '流媒体电视', '流媒体电影', '期限单位', '电子账单',
        '支付方式', '月消费', '总消费', '是否流失']
@@ -105,14 +106,15 @@ def eda_calculate(column,types):
               after=list(rate_list[index].values())[0]
               print('前后者倍数关系',before/after)
 
-# 创建通用函数：提取列标签、提取对应类别数据
-columns=['通话服务', '多线程', '网络服务', '在线安全', '在线备份',
-        '设备安全', '技术支持','流媒体电视', '流媒体电影']
-for c in columns:
-    types=data[c].drop_duplicates().tolist()   # tolist()转换为列表
-    # print(c,types)
-    # 函数应用：快速计算特征指标
-    eda_calculate(c,types)
+# # 创建通用函数：提取列标签、提取对应类别数据
+# columns=['通话服务', '多线程', '网络服务', '在线安全', '在线备份',
+#         '设备安全', '技术支持','流媒体电视', '流媒体电影']
+# for c in columns:
+#     types=data[c].drop_duplicates().tolist()   # tolist()转换为列表
+#     # print(c,types)
+#     # 函数应用：快速计算特征指标
+#     eda_calculate(c,types)
+
 # 数据洞察（高流失率的产品属性特征）
 '''
 1.没有明显相关性的产品服务
@@ -127,13 +129,65 @@ for c in columns:
 '''
 # eda_calculate(column='是否老人',types=[0,1])
 
+
 '''    用户行为    '''
+# 数据检查：确认数据类型、可视化->初步了解
+csm_clos=['在网时长','期限单位', '电子账单','支付方式', '月消费', '总消费']
+# print(data[csm_clos])
+# print(data[csm_clos].dtypes)
+
+# print(data[data['总消费']==' '])   # 筛选排除：是否存在含有空格等值（不进行操作，数据类型转换时可能出现错误）
+import numpy as np
+data=data.replace(' ',np.nan).dropna()   # 去除数据空值
+data['总消费']=data['总消费'].astype('float64')   # 数据类型转换
+print(data[csm_clos].dtypes)
+# data['在网时长'].hist(bins=50)  # 直方图分布
+# # plt.show()
+# data['月消费'].hist(bins=50)
+# # plt.show()
+# data['总消费'].hist(bins=50)
+# # plt.show()
+
+# 类别数据：调用eda_calculate函数
+for c in ['期限单位', '电子账单','支付方式']:
+    eda_calculate(column=c,types=data[c].drop_duplicates().tolist())
+
+# 数值数据：分布图、箱型图
+# '在网时长', '月消费', '总消费'：流失用户数据集、非流失用户数据集
+df1=data[data['是否流失']=='Yes']
+df0=data[data['是否流失']=='No']
+df0['在网时长'].hist(bins=50)  # 非流失
+df1['在网时长'].hist(bins=50)  # 流失
+plt.show()
+df0['月消费'].hist(bins=50)  # 非流失
+df1['月消费'].hist(bins=50)  # 流失
+plt.show()
+df0['总消费'].hist(bins=50)  # 非流失
+df1['总消费'].hist(bins=50)  # 流失
+plt.show()
+
+# 数据洞察
+'''
+合同期限：期限越短越容易流失，按月的流失率大42%，分别为1年的4倍，2年的10倍+
+电子账单：使用电子账单的流失率大30%，位后者的2倍
+支付方式：使用电子发票的流失率大45%，位后者的2~3倍
+在网时长：与流失率呈负相关
+月消费：与流失率呈负相关
+总消费：与流失率呈负相关
+'''
 
 
-
-
-
-
+# ************数据洞察 与 解决方案***********
+'''
+高流失率用户：
+    用户信息：老人、单身、无亲属
+    产品信息：光纤用户、无增值服务（安全、备份、设备、技术）
+    消费行为：月租合同、使用电子账单、电子发票
+方案与建议：
+    用户信息：针对易流失用户指定服务，如：家庭套餐服务
+    产品信息：进一步分析流失原因、绑定增值服务+提升性价比
+    消费行为：提供1、3、6等周期的合同类型
+'''
 
 
 
