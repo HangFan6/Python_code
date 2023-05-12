@@ -109,23 +109,23 @@ plt.rcParams['axes.unicode_minus'] = False  # 运行配置参数总的轴（axes
 # plt.xlim(data['orderAmount'].min(),5000)
 # plt.show()
 '''箱型图'''
-data=pd.read_excel('order2019.xlsx',sheet_name='data')
-# # 箱型图：单个变量、加入比较变量
-# plt.boxplot(data['orderAmount'])  # 箱体中的横线表示中位数
-# plt.ylim(0,2000)
+# data=pd.read_excel('order2019.xlsx',sheet_name='data')
+# # # 箱型图：单个变量、加入比较变量
+# # plt.boxplot(data['orderAmount'])  # 箱体中的横线表示中位数
+# # plt.ylim(0,2000)
+# # plt.show()
+# """
+#     离群值>Q3+1.5*IQR, IQR=Q3-Q1
+#     离群值<Q1-1.5*IQR, IQR=Q3-Q1
+#     Q3:上四分位数；Q1:下四分位数
+# """
+# # 比较orderAmount和payment金额分布表现
+# data2=data[['orderAmount','payment']]
+# # print(data2)
+# plt.boxplot(data2,showmeans=True,labels=data2.columns.tolist())  # showmeans显示均值
+# plt.ylim(0,3000)
+# plt.grid()
 # plt.show()
-"""
-    离群值>Q3+1.5*IQR, IQR=Q3-Q1
-    离群值<Q1-1.5*IQR, IQR=Q3-Q1
-    Q3:上四分位数；Q1:下四分位数
-"""
-# 比较orderAmount和payment金额分布表现
-data2=data[['orderAmount','payment']]
-# print(data2)
-plt.boxplot(data2,showmeans=True,labels=data2.columns.tolist())  # showmeans显示均值
-plt.ylim(0,3000)
-plt.grid()
-plt.show()
 
 
 
