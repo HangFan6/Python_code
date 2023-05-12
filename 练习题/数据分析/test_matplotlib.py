@@ -109,26 +109,54 @@ plt.rcParams['axes.unicode_minus'] = False  # 运行配置参数总的轴（axes
 # plt.xlim(data['orderAmount'].min(),5000)
 # plt.show()
 '''箱型图'''
-data=pd.read_excel('order2019.xlsx',sheet_name='data')
-# # 箱型图：单个变量、加入比较变量
-# plt.boxplot(data['orderAmount'])  # 箱体中的横线表示中位数
-# plt.ylim(0,2000)
+# data=pd.read_excel('order2019.xlsx',sheet_name='data')
+# # # 箱型图：单个变量、加入比较变量
+# # plt.boxplot(data['orderAmount'])  # 箱体中的横线表示中位数
+# # plt.ylim(0,2000)
+# # plt.show()
+# """
+#     离群值>Q3+1.5*IQR, IQR=Q3-Q1
+#     离群值<Q1-1.5*IQR, IQR=Q3-Q1
+#     Q3:上四分位数；Q1:下四分位数
+# """
+# # 比较orderAmount和payment金额分布表现
+# data2=data[['orderAmount','payment']]
+# # print(data2)
+# plt.boxplot(data2,showmeans=True,labels=data2.columns.tolist())  # showmeans显示均值
+# plt.ylim(0,3000)
+# plt.grid()
 # plt.show()
-"""
-    离群值>Q3+1.5*IQR, IQR=Q3-Q1
-    离群值<Q1-1.5*IQR, IQR=Q3-Q1
-    Q3:上四分位数；Q1:下四分位数
-"""
-# 比较orderAmount和payment金额分布表现
-data2=data[['orderAmount','payment']]
-# print(data2)
-plt.boxplot(data2,showmeans=True,labels=data2.columns.tolist())  # showmeans显示均值
-plt.ylim(0,3000)
-plt.grid()
+
+
+'''折线图'''  '''堆叠面积图'''
+# example=np.random.random(100)
+# plt.figure(1)
+# plt.plot(example,color='r')
+#
+# plt.fill_between(np.arange(100),y1=example,y2=0,alpha=0.5)  # alpha设置透明度
+# plt.xlim(0,100)
+# plt.ylim(0,1)
+# plt.show()
+
+# 股票数据示例
+dates=pd.date_range('20180101','20210101',freq='M')
+def get_price(size):
+    prices=np.cumsum(np.random.randn(size))
+    return prices
+size=len(dates)
+price1=get_price(size)
+price2=get_price(size)
+price3=get_price(size)
+fig=plt.figure(1)
+# =====方法1：分别绘制3条曲线
+# plt.plot(dates,price1)
+# plt.plot(dates,price2)
+# plt.plot(dates,price3)
+# fig.autofmt_xdate()  # 自动调整x轴标签显示方式，使其完整显示
+# =====方法2：将3条数据整合从dataframe，直接绘图
+data=pd.DataFrame([price1,price2,price3]).T
+data.index=dates
+data.plot()
+# plt.plot(data)
+# fig.autofmt_xdate()  # 自动调整x轴标签显示方式，使其完整显示
 plt.show()
-
-
-
-
-
-
