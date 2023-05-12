@@ -138,25 +138,113 @@ plt.rcParams['axes.unicode_minus'] = False  # 运行配置参数总的轴（axes
 # plt.ylim(0,1)
 # plt.show()
 
-# 股票数据示例
-dates=pd.date_range('20180101','20210101',freq='M')
-def get_price(size):
-    prices=np.cumsum(np.random.randn(size))
-    return prices
-size=len(dates)
-price1=get_price(size)
-price2=get_price(size)
-price3=get_price(size)
-fig=plt.figure(1)
-# =====方法1：分别绘制3条曲线
-# plt.plot(dates,price1)
-# plt.plot(dates,price2)
-# plt.plot(dates,price3)
-# fig.autofmt_xdate()  # 自动调整x轴标签显示方式，使其完整显示
-# =====方法2：将3条数据整合从dataframe，直接绘图
-data=pd.DataFrame([price1,price2,price3]).T
-data.index=dates
-data.plot()
-# plt.plot(data)
-# fig.autofmt_xdate()  # 自动调整x轴标签显示方式，使其完整显示
+
+# # *********股票数据示例*************
+# dates=pd.date_range('20180101','20210101',freq='M')
+# def get_price(size):
+#     prices=np.cumsum(np.random.randn(size))
+#     return prices
+# size=len(dates)
+# price1=get_price(size)
+# price2=get_price(size)
+# price3=get_price(size)
+# fig=plt.figure(1)
+# # =====方法1：分别绘制3条曲线
+# # plt.plot(dates,price1)
+# # plt.plot(dates,price2)
+# # plt.plot(dates,price3)
+# # fig.autofmt_xdate()  # 自动调整x轴标签显示方式，使其完整显示
+# # =====方法2：将3条数据整合从dataframe，直接绘图
+# data=pd.DataFrame([price1,price2,price3]).T
+# data.index=dates
+# data.plot()
+# # plt.plot(data)
+# # fig.autofmt_xdate()  # 自动调整x轴标签显示方式，使其完整显示
+# # 创建未堆叠面积图
+# plt.figure(2)
+# plt.fill_between(dates,y1=price1,alpha=0.5)  # alpha设置透明度
+# plt.fill_between(dates,y1=price2,alpha=0.5)
+# plt.fill_between(dates,y1=price3,alpha=0.5)
+# plt.show()
+
+
+'''饼图'''
+# 饼图简单示例
+# pre=[0.1,0.2,0.3,0.4]
+# plt.pie(pre,labels=['a','b','c','d'],explode=(0,0.2,0,0),autopct='%.1lf%%')
+# # explode:对应图形剥离距离  autopct：显示数值占比
+# plt.show()
+'''条形图'''
+# # 条形图简单示例
+# data=[0.1,0.2,0.3,0.4]
+# labels=['a','b','c','d']
+# plt.bar(labels,data,color=['r','g','b','y'])
+# # 设置数值标签
+# for x,y in zip(labels,data):
+#     plt.text(x,y/2,y)
+# plt.show()
+
+# 案例
+# data=pd.read_excel('order2019.xlsx')
+# # print(data.columns)
+# # 计算各chanelID的payment总额
+# data2=data[['chanelID','payment']]
+# # print(data2)
+# res=data2.groupby('chanelID').sum()
+# # print(res)
+# plt.figure(1)
+# plt.figure(figsize=(10,10))  # 调整画板
+# plt.pie(res['payment'],labels=res.index,autopct='%.1lf%%',shadow=True,textprops={'size':'smaller'})
+# plt.show()  # 饼图
+# fig=plt.figure(2)
+# plt.bar(res.index,res['payment'])
+# fig.autofmt_xdate()
+# for x,y in zip(res.index.tolist(),res['payment'].tolist()):
+#     plt.text(x,y,'{:g}'.format(y))  # '{:g}'.format(y)：科学计数法
+# plt.show()  # 条形图
+
+'''散点簇形图'''
+# # 简单示例
+# a_x=np.random.random(100)+1
+# a_y=np.random.random(100)+1.5
+# b_x=np.random.random(200)+2.1
+# b_y=np.random.random(200)+1.7
+# plt.scatter(a_x,a_y)
+# plt.scatter(b_x,b_y)
+# plt.show()
+
+'''分组条形图'''
+# # 简单示例
+# x=['a','b','c','d']
+# axis1=[1,2,3,4]
+# axis2=[1.2,2.2,3.2,4.2]
+# y1=[1,2,3,4]
+# y2=[2,3,4,1]
+# plt.bar(axis1,y1,width=0.2)
+# plt.bar(axis2,y2,width=0.2)
+# plt.show()
+
+# 案例
+data=pd.read_excel('order2019.xlsx')
+chanels=data['chanelID'].unique().tolist()[:3]
+data2=data[(data['chanelID']==chanels[0]) | (data['chanelID']==chanels[1]) | (data['chanelID']==chanels[2])]
+# print(data2)
+res=data2.groupby(['chanelID','platfromType']).sum()
+# print(res)
+# x轴分组位置设置
+labels1=res.loc[chanels[0],:].index.tolist()
+labels2=res.loc[chanels[1],:].index.tolist()
+labels3=res.loc[chanels[2],:].index.tolist()
+fig,ax=plt.subplots(figsize=(8,7))
+plt.bar(np.arange(len(labels1))+1,res.loc[chanels[0],'payment'].tolist(),width=0.2)
+plt.bar(np.arange(len(labels2))+1.2,res.loc[chanels[1],'payment'].tolist(),width=0.2)
+plt.bar(np.arange(len(labels3))+1.4,res.loc[chanels[2],'payment'].tolist(),width=0.2)
+# x轴类别数据
+ax.set_xticks(np.arange(len(labels1)))
+ax.set_xticklabels(labels=labels1,rotation=45)
 plt.show()
+
+
+
+
+
