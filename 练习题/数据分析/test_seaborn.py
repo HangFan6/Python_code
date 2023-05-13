@@ -3,13 +3,10 @@
 作者：HET
 日期：2023年05月13日
 """
-import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
 import seaborn as sns
 
-plt.rcParams['font.sans-serif'] = ['SimHei']  # SimHei表示黑体
-plt.rcParams['axes.unicode_minus'] = False  # 运行配置参数总的轴（axes）正常显示正负号（minus）
 
 '''plt.show() 每次最多能显示两张图'''
 
@@ -22,7 +19,7 @@ plt.rcParams['axes.unicode_minus'] = False  # 运行配置参数总的轴（axes
 # sns.scatterplot(data=example)  # x轴为序号值
 # plt.figure(3)
 # sns.set(style='dark')  # 默认设置背景色darkgrid（带网格暗色）
-# # (全局样式设置) style: white、dark、whitegrid、darkgrid
+# # (全局样式设置) style: white、dark、whitegrid、darkgrid、ticks(带刻度线)
 # sns.scatterplot(data=example,x='x1',y='y1')  # 指定x轴与对应的y值
 # plt.figure(4)
 # sns.scatterplot(data=example,x='a1',y='b1')  # 指定x轴与对应的y值
@@ -81,6 +78,8 @@ bases=bases.cumprod()
 print(bases)
 sns.lineplot(data=bases)
 plt.show()
+
+
 
 
 
