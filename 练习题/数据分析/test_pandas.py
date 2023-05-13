@@ -84,5 +84,3 @@ print(data)
 # 周期转换
 x=data.resample(rule='Y').last()  # frist()
 print(x)  # 每年最后一月数据
-
-
