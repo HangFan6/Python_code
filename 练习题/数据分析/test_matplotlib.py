@@ -224,27 +224,47 @@ plt.rcParams['axes.unicode_minus'] = False  # 运行配置参数总的轴（axes
 # plt.bar(axis2,y2,width=0.2)
 # plt.show()
 
-# 案例
+# # ************案例***************
+# data=pd.read_excel('order2019.xlsx')
+# chanels=data['chanelID'].unique().tolist()[:3]
+# data2=data[(data['chanelID']==chanels[0]) | (data['chanelID']==chanels[1]) | (data['chanelID']==chanels[2])]
+# # print(data2)
+# res=data2.groupby(['chanelID','platfromType']).sum()
+# # print(res)
+# # x轴分组位置设置
+# labels1=res.loc[chanels[0],:].index.tolist()
+# labels2=res.loc[chanels[1],:].index.tolist()
+# labels3=res.loc[chanels[2],:].index.tolist()
+# fig,ax=plt.subplots(figsize=(8,7))
+# plt.bar(np.arange(len(labels1))+1,res.loc[chanels[0],'payment'].tolist(),width=0.2)
+# plt.bar(np.arange(len(labels2))+1.2,res.loc[chanels[1],'payment'].tolist(),width=0.2)
+# plt.bar(np.arange(len(labels3))+1.4,res.loc[chanels[2],'payment'].tolist(),width=0.2)
+# # x轴类别数据
+# ax.set_xticks(np.arange(len(labels1)))
+# ax.set_xticklabels(labels=labels1,rotation=45)
+# plt.show()
+
+'''发散型条形图'''   '''面积图'''
+# 简单案例
+# plt.hlines(y=['a','b','c'],xmin=0,xmax=[-1,2,0.5],colors=['r','g','b'])  # 发散型条形图
+# plt.show()
+
 data=pd.read_excel('order2019.xlsx')
-chanels=data['chanelID'].unique().tolist()[:3]
-data2=data[(data['chanelID']==chanels[0]) | (data['chanelID']==chanels[1]) | (data['chanelID']==chanels[2])]
-# print(data2)
-res=data2.groupby(['chanelID','platfromType']).sum()
+res=data[['chanelID','payment']].groupby('chanelID').sum()
+res=res.sort_values('payment')   # ascending默认为True，升序排序
+res['colors']=['red' if x>10000000 else 'green' for x in res['payment']]
 # print(res)
-# x轴分组位置设置
-labels1=res.loc[chanels[0],:].index.tolist()
-labels2=res.loc[chanels[1],:].index.tolist()
-labels3=res.loc[chanels[2],:].index.tolist()
-fig,ax=plt.subplots(figsize=(8,7))
-plt.bar(np.arange(len(labels1))+1,res.loc[chanels[0],'payment'].tolist(),width=0.2)
-plt.bar(np.arange(len(labels2))+1.2,res.loc[chanels[1],'payment'].tolist(),width=0.2)
-plt.bar(np.arange(len(labels3))+1.4,res.loc[chanels[2],'payment'].tolist(),width=0.2)
-# x轴类别数据
-ax.set_xticks(np.arange(len(labels1)))
-ax.set_xticklabels(labels=labels1,rotation=45)
+plt.figure(1)
+plt.hlines(y=res.index,xmin=0,xmax=res['payment'],colors=res['colors'])   # 发散型条形图
+plt.grid(linestyle='--',alpha=0.5)
+
+res['error']=res['payment']-res['payment'].mean()  # 交易额差值排序
+res=res.sort_values('chanelID')
+plt.figure(2,figsize=(8,6))
+plt.plot(res['error'])
+plt.fill_between(res.index,res['error'],0,where=res['error']>0,facecolor='g',interpolate=True,alpha=0.5)
+plt.fill_between(res.index,res['error'],0,where=res['error']<=0,facecolor='r',interpolate=True,alpha=0.5)
+plt.xticks(rotation=45)
 plt.show()
-
-
-
 
 
