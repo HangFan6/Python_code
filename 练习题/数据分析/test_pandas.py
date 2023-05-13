@@ -57,6 +57,7 @@ import pandas_datareader as pdr
 # data=data[data>0.3]
 # print(data)  # 不满足条件的值为NaN
 # print(data.dropna())   # 去缺失值
+# print(data.drop_duplicates())   # 去重复值
 # # =========转置、排序=============
 # print(data.T)
 # print(data.sort_values(['A','B'],ascending=False))  # 降序
