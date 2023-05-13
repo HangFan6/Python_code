@@ -63,19 +63,26 @@ plt.rcParams['axes.unicode_minus'] = False  # 运行配置参数总的轴（axes
 # plt.show()
 
 '''test4 绘制一下人均GDP的直方图以及人均寿命的箱型图'''
+# data=pd.read_csv('WorldBank.csv')
+# plt.figure(1)
+# plt.hist(data['GDP_per_capita'],bins=100,color='g')
+# plt.xlim(0,50000)
+# plt.title('人均GDP')
+# plt.figure(2)
+# plt.boxplot(data['Life_expectancy'])
+# plt.ylim(45,85)
+# plt.title('人均寿命')
+# plt.xlabel('年龄')
+# plt.show()
+
+'''test5 统计每个大洲的国家个数'''
 data=pd.read_csv('WorldBank.csv')
-plt.figure(1)
-plt.hist(data['GDP_per_capita'],bins=100,color='g')
-plt.xlim(0,50000)
-plt.title('人均GDP')
-plt.figure(2)
-plt.boxplot(data['Life_expectancy'])
-plt.ylim(45,85)
-plt.title('人均寿命')
-plt.xlabel('年龄')
+res=data.groupby('Continent').count()
+res=res.sort_values('Country')
+res.index=['大洋洲','南美洲','北美洲','亚洲','欧洲','非洲']
+print(res)
+plt.hlines(y=res.index,xmin=0,xmax=res['Country'],linewidth=15)
 plt.show()
-
-
 
 
 
