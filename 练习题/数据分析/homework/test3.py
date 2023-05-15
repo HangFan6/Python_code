@@ -50,7 +50,7 @@ plt.rcParams['axes.unicode_minus'] = False  # 运行配置参数总的轴（axes
 #     index=0
 #     for j in np.arange(len(weekdays)):
 #         if index<=len(weekdays):
-#             plt.text(j, i, 'NaN' if np.isnan(result[i][j]) else result[i][j], color='w', ha='center', va='center')
+#             plt.text(j, i, 'NaN' if np.isnan(result[i][j]) else result[i][j], color='r', ha='center', va='center')
 #             index += 1
 #             continue
 # # 设置坐标轴的类别数据标签
@@ -58,7 +58,7 @@ plt.rcParams['axes.unicode_minus'] = False  # 运行配置参数总的轴（axes
 # ax.set_yticks(np.arange(len(week)))
 # ax.set_xticklabels(weekdays)
 # ax.set_yticklabels(week)
-# ax.set_title('工厂的商品质量')
+# ax.set_title('海南省海口市的天气热力图')
 # fig.tight_layout()  # 设置图表分布
 # plt.show()
 
