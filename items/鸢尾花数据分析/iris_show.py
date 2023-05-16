@@ -44,4 +44,3 @@ sns.heatmap(corrs,annot=True,cmap='YlGnBu')   # 热力图
 plt.figure(2)
 sns.pairplot(iris,hue='species')   # 配对图
 plt.show()
-
