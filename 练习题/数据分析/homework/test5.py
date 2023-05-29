@@ -86,7 +86,5 @@ import matplotlib.pyplot as plt
 # # 认为两班次的服务水平没有异常
 
 
-'''test4 男性用户和女性用户的月消费额是否有显著性差异？'''
-
 
 
