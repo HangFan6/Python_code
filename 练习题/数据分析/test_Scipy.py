@@ -234,3 +234,4 @@ churn1 = data[data['性别']=='Female']['月消费']
 s0=churn0.tolist()  # 男性
 s1=churn1.tolist()  # 女性
 print(stats.ks_2samp(s0,s1))  # p=36.9%，不存在显著性差异，拒绝H1，接受H0
+
